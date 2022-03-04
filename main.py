@@ -1,8 +1,9 @@
 from typing import Optional
-from fastapi import status
-from starlette.responses import JSONResponse
+
 import uvicorn
+from fastapi import status
 from pydantic import BaseModel
+from starlette.responses import JSONResponse
 
 from conf import settings
 from utils import create_app, exec_bin
