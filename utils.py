@@ -1,18 +1,22 @@
 import asyncio
-from typing import Dict
+from typing import Tuple
+
+from fastapi import FastAPI
 
 from conf import settings
 
 
-async def exec_bin() -> Dict[str, str]:
+async def exec_bin(program: str = None, params: str = None) -> Tuple[str, str]:
     proc = await asyncio.create_subprocess_exec(
-        settings.get("curdir") / "bin" / "nth_fibonacci_number",
-        "10",
+        settings.get("curdir") / "bin" / program,
+        params,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
     stdout, stderr = await proc.communicate()
-    return {"stdout": stdout.decode("utf-8"), "stderr": stderr.decode("utf-8")}
+    return (stdout.decode("utf-8"), stderr.decode("utf-8"))
 
 
-asyncio.run(exec_bin())
+def create_app() -> FastAPI:
+    app = FastAPI()
+    return app
