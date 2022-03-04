@@ -23,7 +23,17 @@ async def root():
 @app.post("/nth_fibonacci_number")
 async def nth_fibonacci_number_api(payload: PayLoad):
     output, err = await exec_bin(program="nth_fibonacci_number", params=payload.body)
-    print(output, err)
+    if err:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content={"message": "Error with binary file."},
+        )
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"output": output})
+
+
+@app.post("/palindrome_number_check")
+async def palindrome_number_check_api(payload: PayLoad):
+    output, err = await exec_bin(program="palindrome_number", params=payload.body)
     if err:
         return JSONResponse(
             status_code=status.HTTP_409_CONFLICT,
