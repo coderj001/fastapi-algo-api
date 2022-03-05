@@ -52,6 +52,16 @@ async def multiples_of_3_or_5_api(payload: PayLoad):
         )
     return JSONResponse(status_code=status.HTTP_200_OK, content={"output": output})
 
+@app.post("/sum_square_diff")
+async def sum_square_diff(payload: PayLoad):
+    output, err = await exec_bin(program="sum_square_diff", params=payload.body)
+    if err:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content={"message": "Error with binary file.", "output": err},
+        )
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"output": output})
+
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
