@@ -26,7 +26,7 @@ async def nth_fibonacci_number_api(payload: PayLoad):
     if err:
         return JSONResponse(
             status_code=status.HTTP_409_CONFLICT,
-            content={"message": "Error with binary file."},
+            content={"message": "Error with binary file.", "output": err},
         )
     return JSONResponse(status_code=status.HTTP_200_OK, content={"output": output})
 
@@ -37,10 +37,20 @@ async def palindrome_number_check_api(payload: PayLoad):
     if err:
         return JSONResponse(
             status_code=status.HTTP_409_CONFLICT,
-            content={"message": "Error with binary file."},
+            content={"message": "Error with binary file.", "output": err},
         )
     return JSONResponse(status_code=status.HTTP_200_OK, content={"output": output})
 
+
+@app.post("/multiples_of_3_or_5")
+async def multiples_of_3_or_5_api(payload: PayLoad):
+    output, err = await exec_bin(program="multiples_of_3_or_5", params=payload.body)
+    if err:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content={"message": "Error with binary file.", "output": err},
+        )
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"output": output})
 
 if __name__ == "__main__":
     uvicorn.run(
